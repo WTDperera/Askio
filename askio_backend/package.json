@@ -1,0 +1,31 @@
+{
+  "name": "askio_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "saver.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon saver.js",
+    "start": "NODE_ENV=production node saver.js",
+    "start:win": "set NODE_ENV=production&& node saver.js",
+    "lint": "echo 'No linter configured'",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.1.6",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^7.2.0",
+    "inngest": "^3.40.1",
+    "mongoose": "^8.17.1",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

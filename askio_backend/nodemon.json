@@ -1,0 +1,6 @@
+{
+  "watch": ["saver.js", "routes", "models", "configs", "middleware", "services"],
+  "ext": "js,json",
+  "ignore": ["uploads", "*.log"],
+  "delay": "200ms"
+}

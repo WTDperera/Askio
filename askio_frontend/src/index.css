@@ -1,0 +1,67 @@
+/* Tailwind v4 import */
+@import "tailwindcss";
+
+/* Optional: If you only want a reset without utilities, you can do:
+   @import "tailwindcss/preflight";
+   But typically, import "tailwindcss" is what you want.
+*/
+
+/* App base */
+html, body, #root { height: 100%; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::selection {
+  background: #e9d5ff; /* violet-200 */
+  color: #1f2937;      /* slate-800 */
+}
+
+/* Utility: two-line clamp (no plugin needed) */
+.clamp-2 {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Hide scrollbars where desired */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Clerk.dev theming */
+.cl-card {
+  box-shadow: none !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #e2e8f0 !important; /* slate-200 */
+  backdrop-filter: saturate(1.2);
+}
+.cl-headerTitle, .cl-headerSubtitle { text-align: center !important; }
+.cl-formButtonPrimary {
+  background-color: #4f46e5 !important; /* indigo-600 */
+  text-transform: capitalize !important;
+  transition: all 0.2s;
+  box-shadow: none !important;
+}
+.cl-formButtonPrimary:hover { background-color: #4338ca !important; } /* indigo-700 */
+.cl-footerAction, .cl-socialButtonsBlockButton { box-shadow: none !important; }
+.cl-socialButtonsBlockButton { border: 1px solid #e2e8f0 !important; padding: 0.75rem !important; }
+.cl-footerActionLink { color: #4f46e5 !important; }

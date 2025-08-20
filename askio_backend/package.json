@@ -4,9 +4,13 @@
   "description": "",
   "main": "saver.js",
   "type": "module",
+  
+
+  
   "scripts": {
+     "start": "node saver.js",
     "dev": "nodemon saver.js",
-    "start": "NODE_ENV=production node saver.js",
+    
     "start:win": "set NODE_ENV=production&& node saver.js",
     "lint": "echo 'No linter configured'",
     "test": "echo \"No tests yet\" && exit 0"

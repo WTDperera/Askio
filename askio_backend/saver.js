@@ -15,6 +15,7 @@ import notificationsRouter from './routes/notifications.js';
 import debugRouter from './routes/debug.js';
 import inngestRouter from './routes/inngest.js';
 import { startStoryCleanup } from './services/storyCleanup.js';
+import healthRouter from './routes/health.js';
 
 const app = express();
 
@@ -87,6 +88,7 @@ app.use('/api/messages', messagesRouter);
 app.use('/api/notifications', notificationsRouter);
 app.use(inngestRouter);
 app.use('/api/debug', debugRouter);
+app.use('/api', healthRouter); // /api/health for Railway health checks
 
 // Central error fallthrough (keep last)
 // eslint-disable-next-line no-unused-vars

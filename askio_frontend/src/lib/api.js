@@ -1,15 +1,5 @@
 // Lightweight fetch wrapper + grouped endpoint helpers.
-// Unify base URL resolution: prefer VITE_API_URL (new), then fallback to VITE_API_BASE, then localhost.
-const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'http://localhost:4000';
-
-// Axios instance (optional usage) – added per request.
-// withCredentials can be left true if you later use cookies; current auth uses Bearer tokens.
-// Exported as axiosClient for clarity so it doesn't shadow default export at bottom.
-import axios from 'axios';
-export const axiosClient = axios.create({
-  baseURL: API_BASE,
-  withCredentials: true,
-});
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
 
 async function request(path, { method = 'GET', body, token, headers = {} } = {}) {
   const isFormData = (typeof FormData !== 'undefined') && body instanceof FormData;

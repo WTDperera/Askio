@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"; // Feed timeline
 import { assets } from "../assets/assets"; // only static images
-// Legacy fetch helper replaced with axios instance for list operation.
-import API from "../api";
+import { postsApi } from "../lib/api";
 import { useAuth } from '@clerk/clerk-react';
 import Loading from "../components/Loading";
 import StoriesBar from "../components/StoriesBar";
@@ -17,18 +16,19 @@ const Feed = () => {
 
   const fetchPosts = async () => {
     try {
-      const { data } = await API.get('/api/posts');
-      const API_BASE = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'http://localhost:4000');
+      const data = await postsApi.list();
+      // Normalize to shape expected by PostCard
+      const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
       const resolve = (u) => (u && u.startsWith('/uploads') ? `${API_BASE}${u}` : u);
       const items = data.items?.map(p => {
         const mapUser = (uId, uObj) => {
           const base = uObj || {};
-          const pic = base.profile_picture || '/default-avatar.png';
-          return {
-            full_name: base.full_name || uId,
-            username: base.username || uId,
-            profile_picture: resolve(pic)
-          };
+            const pic = base.profile_picture || '/default-avatar.png';
+            return {
+              full_name: base.full_name || uId,
+              username: base.username || uId,
+              profile_picture: resolve(pic)
+            };
         };
         return {
           id: p._id,
@@ -45,7 +45,7 @@ const Feed = () => {
             userId: c.userId,
             user: mapUser(c.userId, c.user)
           })),
-            createdAt: p.createdAt
+          createdAt: p.createdAt
         };
       }) || [];
       setPosts(items);
@@ -59,6 +59,8 @@ const Feed = () => {
   useEffect(() => { fetchPosts(); }, []);
 
   if (loading) return <Loading />;
+
+  // Removed 'Who to follow' suggestions section per request
 
   return (
     <>
@@ -91,18 +93,41 @@ const Feed = () => {
             />
           ))}
         </div>
+
+  {/* Right column */}
         <div className="hidden lg:block flex-1 max-w-xs space-y-4 sticky top-[72px] h-fit">
+          {/* Trending hashtags (static placeholder) */}
           <div className="bg-white max-w-xs mt-4 p-4 min-h-20 rounded-md shadow">
             <h3 className="font-semibold text-slate-800 mb-3">
               Trending Questions
             </h3>
             <ul className="text-sm space-y-2">
-              <li><a href="#" className="hover:underline">#ReactJs</a></li>
-              <li><a href="#" className="hover:underline">#Firebase</a></li>
-              <li><a href="#" className="hover:underline">#MongoDB</a></li>
-              <li><a href="#" className="hover:underline">#Docker</a></li>
+              <li>
+                <a href="#" className="hover:underline">
+                  #ReactJs
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  #Firebase
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  #MongoDB
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  #Docker
+                </a>
+              </li>
             </ul>
           </div>
+
+          {/* (Removed Who to follow section) */}
+
+          {/* Sponsored / Ad slot */}
           <div className="bg-white p-4 rounded-md shadow">
             <h3 className="font-semibold text-slate-800 mb-3">Sponsored</h3>
             <img
@@ -114,6 +139,7 @@ const Feed = () => {
               Level up your dev stack with the latest tools.
             </p>
           </div>
+
           <RecentMessages />
         </div>
       </div>

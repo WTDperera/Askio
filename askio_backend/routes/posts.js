@@ -61,6 +61,7 @@ router.get('/', authOptional, async (req, res) => {
   const userMap = await ensureUsersLoaded([...userIdSet]);
   const enriched = items.map(p => ({
     ...p,
+    id: p._id, // frontend convenience alias
     user: userMap[p.userId] ? {
       full_name: userMap[p.userId].full_name || p.userId,
       username: userMap[p.userId].username || p.userId,
@@ -68,6 +69,7 @@ router.get('/', authOptional, async (req, res) => {
     } : { full_name: p.userId, username: p.userId, profile_picture: '/default-avatar.png' },
     comments: (p.comments || []).map(c => ({
       ...c,
+      id: c._id,
       user: userMap[c.userId] ? {
         full_name: userMap[c.userId].full_name || c.userId,
         username: userMap[c.userId].username || c.userId,
@@ -106,7 +108,9 @@ router.post('/', requireAuth, upload.single('media'), async (req, res) => {
   } catch (e) {
     if (process.env.LOG_UPLOAD_REQUESTS === 'true') console.warn('[inngest] send failed', e.message);
   }
-  res.status(201).json(doc);
+  const obj = doc.toObject();
+  obj.id = obj._id;
+  res.status(201).json(obj);
 });
 
 // GET /api/posts/:id – fetch one post.
@@ -118,6 +122,7 @@ router.get('/:id', authOptional, async (req, res) => {
   const userMap = await ensureUsersLoaded([...ids]);
   const enriched = {
     ...post,
+    id: post._id,
     user: userMap[post.userId] ? {
       full_name: userMap[post.userId].full_name || post.userId,
       username: userMap[post.userId].username || post.userId,
@@ -125,6 +130,7 @@ router.get('/:id', authOptional, async (req, res) => {
     } : { full_name: post.userId, username: post.userId, profile_picture: '/default-avatar.png' },
     comments: (post.comments || []).map(c => ({
       ...c,
+      id: c._id,
       user: userMap[c.userId] ? {
         full_name: userMap[c.userId].full_name || c.userId,
         username: userMap[c.userId].username || c.userId,
@@ -145,7 +151,9 @@ router.patch('/:id', requireAuth, async (req, res) => {
   if (image_urls !== undefined) post.image_urls = image_urls;
   if (video_url !== undefined) post.video_url = video_url;
   await post.save();
-  res.json(post);
+  const obj = post.toObject();
+  obj.id = obj._id;
+  res.json(obj);
 });
 
 // DELETE /api/posts/:id – owner remove.
@@ -184,6 +192,7 @@ router.post('/:id/comments', requireAuth, async (req, res) => {
   const userMap = await ensureUsersLoaded([saved.userId]);
   const enriched = {
     ...saved.toObject(),
+    id: saved._id,
     user: userMap[saved.userId] ? {
       full_name: userMap[saved.userId].full_name || saved.userId,
       username: userMap[saved.userId].username || saved.userId,
